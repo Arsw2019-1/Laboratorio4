@@ -1,0 +1,23 @@
+Desarrollo
+
+Parte 1
+    Revise el funcionamiento del programa y ejecútelo.Mientras esto ocurren, 
+    ejecute jVisualVM y revise el consumo de CPU del proceso correspondiente.
+
+    1.1.1 A qué se debe este consumo de CPU? 
+        El consumo de CPU por el uso constante que esta reaizando el 
+        productor/Consumidor, que mientras uno produce el otro consume 
+        por lo que esta haciendo un uso constante de los recursos del sistema.
+
+
+    1.1.2  cual es la clase responsable?
+        La clase responsable de este consumo es "edu.eci.arst.concprg.prodcons.StartProduction".
+    
+    1.2 Escriba un código para resolver los problemas de uso de la CPU, 
+        teniendo en cuenta que por ahora la producción es lenta 
+        y el consumo es rápido, verifique que el consumo 
+        de la CPU haya disminuido.
+
+Parter 2.1
+
+
