@@ -6,40 +6,43 @@
 package edu.eci.arst.concprg.prodcons;
 
 import java.util.Queue;
-import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author hcadavid
  */
 public class Consumer extends Thread{
-    private final Contenedor contenedor;
-    private Queue<Integer> queue;
-    private Random aleatorio;
+    
+    private LinkedBlockingQueue queue;
     
     
-    public Consumer(Contenedor contenedor){
-        //this.queue=queue;
-        this.contenedor=contenedor;
-        aleatorio = new Random();
+    public Consumer(LinkedBlockingQueue queue){
+        this.queue=queue;        
     }
     
     @Override
-    public synchronized void run() {
+    public synchronized  void run() {
         while (true) {
 
-            if (!contenedor.getEstado()) {
-                //int elem=queue.poll();
-                int dato=aleatorio.nextInt(10)+1;
-                int t=contenedor.get();
-                System.out.println("Consumer consumes "+t); 
+            if (queue.size() > 0) {
+                int elem=(int) queue.poll();
+                System.out.println("Consumer consumes "+elem);
+            
+                synchronized (queue) {
+                    queue.notify();
+                }
+                
                 try {
-				Thread.sleep(500);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(StartProduction.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
         }
+        
     }
 }
