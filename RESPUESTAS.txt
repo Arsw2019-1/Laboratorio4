@@ -21,3 +21,24 @@ Parte 1
 Parter 2.1
 
 
+        2.1.2 Deberia ser N*health de cada inmortal.
+    
+        2.1.3.No, aunque la suma de la salud total si sea de los N inmortales aun en juego, 
+            ese valor va subiendo y subiendo con el paso del tiempo. 
+            El invariante no se cumple.
+
+        2.1.4 Se hizo lo necesario y todo quedo implementado y funcinando ademas de evitar las condiciones de carrera.
+
+        2.1.5 Si, el invariante se cumple, la sumatoria de todos los puntos de vida de los inmortales
+            es siempre el mismo.
+
+
+        2.1.6   Se identifico una region critica en los inmortales, y para solucionarlo se uso dos lock simultaneamente en
+            la clase inmortal, en el metodo figth, que es donde pelean.
+
+        2.1.7 El programa no se detiene a pesar de dejarlo varios minutos ejecutando.
+
+        2.1.8   El programa funciona bien hasta con 1000, despues al pasarle 10000 inmortales el programa ni responde.
+                Toco varias veces probarlo debido a la maqiuna virtual.
+
+        2.1.11 La funion esta correctamente implementada.
