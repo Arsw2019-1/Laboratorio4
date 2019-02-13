@@ -43,6 +43,12 @@ Parter 2.1
 
         2.1.10.1    Las condiciones de carrera que se podrian presentar, es que al eliminar el resto de inmortales, solo quede 1 y este pele 
                 Con sigo mismo.
-        2.1.10.2    
+
+        2.1.10.2    Se arreglo el programa y se retiraron los inmortales que ya hacian muertos, y el programa
+                Devuelve la vida total del N total de inmortales.
 
         2.1.11 La funion esta correctamente implementada.
+
+        NOTA IMPORTANTE LEER
+
+        DEBERA PARAR Y VOLVER A EJECUTAR, EL JAVA SE BLOQUEA AVECES POR LA MQUINA VIRTUAL.

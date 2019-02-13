@@ -85,13 +85,13 @@ public class Immortal extends Thread {
             im = immortalsPopulation.get(nextFighterIndex);
 
             this.fight(im);
+          
+                
+
             try {
-                deadIm();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Immortal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            try {
+                
                 Thread.sleep(1);
+                deadIm();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -102,42 +102,34 @@ public class Immortal extends Thread {
 
     public void deadIm() throws InterruptedException {
         //for (int i =0; i<immortalsPopulation.size();i++) {
+        Boolean pre =false;
         int i = 0;
         int tamaño = immortalsPopulation.size();
-        while (i< tamaño&& tamaño>1) {
-            
-            System.out.println("i es :"+i+"  tamaño :"+tamaño);
-            System.out.println("que sale "+(i< tamaño));
-            //tamaño = immortalsPopulation.size();
+        while (i< tamaño&& !pre) {
+
             Immortal tem = immortalsPopulation.get(i);
-            //System.out.println("El inmortal es: "+tem);
-            //System.out.println("que es i "+i+"quees tam"+tamaño);
-            //System.out.println("Cual es el indice del inmortal "+immortalsPopulation.indexOf(tem));
+
             if (tem.health == 0 ) {
-                //synchronized (immortalsPopulation) {
-                    //Thread.sleep(1000);
-//                    immortalsPopulation.indexOf(i);
+
                     immortalsPopulation.remove(immortalsPopulation.indexOf(tem));
-                    System.out.println("Sacando");
-                    //immortalsPopulation.remove(temp);
+
                     updateCallback.processReport( "sacando");
                     tamaño--;
                     i--;
-                    //tem.suspend();
-                //}
             } 
 
-            System.out.println("valor antes de i "+i);
+ 
 
             i=i+1;
             System.out.println("valor despues de  de i "+i);
             System.out.println("i :"+i+"tamaño"+tamaño);
             System.out.println("Tamaño del arreglo de inmortales : "+immortalsPopulation.size());
             if(tamaño==1){
+                pre=true;
                 fin();
                 System.out.println("Rompiendo");
-                break;
-            
+                tem.setExecute(false);
+                updateCallback.processReport("Finalizado \n"+immortalsPopulation.toString());
             }
         }
     }
