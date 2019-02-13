@@ -1,4 +1,5 @@
 package edu.eci.arsw.highlandersim;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.util.LinkedList;
@@ -19,6 +20,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +39,8 @@ public class ControlFrame extends JFrame {
     private JLabel statisticsLabel;
     private JScrollPane scrollPane;
     private JTextField numOfImmortals;
-    private AtomicInteger contador= new AtomicInteger(0);
+    private AtomicInteger contador = new AtomicInteger(0);
+
     /**
      * Launch the application.
      */
@@ -77,10 +80,10 @@ public class ControlFrame extends JFrame {
                 if (immortals != null) {
                     for (Immortal im : immortals) {
                         im.start();
-                    }    
+                    }
                 }
                 btnStart.setEnabled(false);
-
+                
             }
         });
         toolBar.add(btnStart);
@@ -88,33 +91,29 @@ public class ControlFrame extends JFrame {
         JButton btnPauseAndCheck = new JButton("Pause and check");
         btnPauseAndCheck.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                /*
-				 * COMPLETAR
-                 */
-                for(Immortal inmortal: immortals){
+
+                for (Immortal inmortal : immortals) {
                     inmortal.setPause(true);
-                  
-                   
+
                 }
-                try{
-                    while(contador.get()<immortals.size()){
+                try {
+                    while (contador.get() < immortals.size()) {
                         Thread.sleep(100);
                     }
-                    
-                } catch (InterruptedException ex){
+
+                } catch (InterruptedException ex) {
                     //Logger.getLogger(ControlFrame.class);
                     Logger.getLogger(ControlFrame.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 int sum = 0;
                 for (Immortal im : immortals) {
                     sum += im.getHealth();
                 }
 
                 //statisticsLabel.setText("<html>"+immortals.toString()+"<br>Health sum:"+ sum);
-                statisticsLabel.setText("<html><br>Health sum:"+ sum);
+                statisticsLabel.setText("<html><br>Health sum:" + sum);
                 //output.setText(immortals.toString()+". SUm: "+sum);
-                
 
             }
         });
@@ -125,14 +124,14 @@ public class ControlFrame extends JFrame {
         btnResume.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 contador.set(0);
-                for(Immortal imor: immortals){
+                for (Immortal imor : immortals) {
                     imor.setPause(false);
-                    
-                 }
-                synchronized(immortals){
+
+                }
+                synchronized (immortals) {
                     immortals.notifyAll();
                 }
-                
+
             }
         });
 
@@ -151,10 +150,10 @@ public class ControlFrame extends JFrame {
         btnStop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // STOP
-                for(Immortal imm : immortals ){
+                for (Immortal imm : immortals) {
                     imm.setExecute(false);
                 }
-                output.setText("Finalizado\n" + immortals.toString()); 
+                output.setText("Finalizado\n" + immortals.toString());
             }
         });
 
@@ -166,43 +165,40 @@ public class ControlFrame extends JFrame {
         output = new JTextArea();
         output.setEditable(false);
         scrollPane.setViewportView(output);
-        
-        
+
         statisticsLabel = new JLabel("Immortals total health:");
         contentPane.add(statisticsLabel, BorderLayout.SOUTH);
 
     }
 
-    public void finishWork(){
-        int regulator=0;
-        for(Immortal imor: immortals){
-            if(imor.getHealth()>0){
-                regulator+=1;
-            }       
+    public void finishWork() {
+        int regulator = 0;
+        for (Immortal imor : immortals) {
+            if (imor.getHealth() > 0) {
+                regulator += 1;
+            }
         }
-        if(regulator==1){
-            
-            for(Immortal imm : immortals ){
+        if (regulator == 1) {
+
+            for (Immortal imm : immortals) {
                 imm.setExecute(false);
-            }            
-        
-        
+            }
+
         }
-    
-    
+
     }
-    
+
     public List<Immortal> setupInmortals() {
 
-        ImmortalUpdateReportCallback ucb=new TextAreaUpdateReportCallback(output,scrollPane);
-        
+        ImmortalUpdateReportCallback ucb = new TextAreaUpdateReportCallback(output, scrollPane);
+
         try {
             int ni = Integer.parseInt(numOfImmortals.getText());
 
             List<Immortal> il = new LinkedList<Immortal>();
 
             for (int i = 0; i < ni; i++) {
-                Immortal i1 = new Immortal("im" + i, il, DEFAULT_IMMORTAL_HEALTH, DEFAULT_DAMAGE_VALUE,ucb,contador);
+                Immortal i1 = new Immortal("im" + i, (List<Immortal>) il, DEFAULT_IMMORTAL_HEALTH, DEFAULT_DAMAGE_VALUE, ucb, contador);
                 il.add(i1);
             }
             return il;
@@ -215,16 +211,16 @@ public class ControlFrame extends JFrame {
 
 }
 
-class TextAreaUpdateReportCallback implements ImmortalUpdateReportCallback{
+class TextAreaUpdateReportCallback implements ImmortalUpdateReportCallback {
 
     JTextArea ta;
     JScrollPane jsp;
 
-    public TextAreaUpdateReportCallback(JTextArea ta,JScrollPane jsp) {
+    public TextAreaUpdateReportCallback(JTextArea ta, JScrollPane jsp) {
         this.ta = ta;
-        this.jsp=jsp;
-    }       
-    
+        this.jsp = jsp;
+    }
+
     @Override
     public void processReport(String report) {
         ta.append(report);
@@ -239,5 +235,5 @@ class TextAreaUpdateReportCallback implements ImmortalUpdateReportCallback{
         );
 
     }
-    
+
 }
